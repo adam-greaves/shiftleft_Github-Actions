@@ -23,10 +23,12 @@ jobs:
       #  run: bash ./files/checkGit.sh
       - name: twistcli download
         run: curl -s -k -u $TL_USER:$TL_PASS "https://$TL_CONSOLE/api/v1/util/twistcli" -v -o twistcli;chmod +x twistcli
-
+        
+      # SCAN REPO CODE FOR VULNERABILITIES
       - name: Repo Vulnerability scan 
         run: bash ./files/repoScan.sh
         
+      # SCAN IMAGES FOR VULNERABILITIES  
       - name: Scan Image with twistcli
         run: bash ./files/scanImage.sh
 
@@ -63,6 +65,8 @@ jobs:
     #      download_external_modules: true
           #log_level: WARNING # optional: set log level. Default WARNING
           
+          
+      # SCAN IAC FOR VULNERABILITIES    
       - name: Run Checkov action
         id: checkov
         uses: bridgecrewio/checkov-action@master
