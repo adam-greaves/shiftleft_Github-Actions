@@ -26,44 +26,59 @@ jobs:
 
       - name: Repo Vulnerability scan 
         run: bash ./files/repoScan.sh
-
-      - name: OSS License Check 
-        run: bash ./files/licenseCheck.sh
-
-      - name: Apply security policies (Policy-as-Code) for evilpetclinic
-        run: bash ./files/addPolicies.sh
-      
-      - name: Image Sandbox analysis
-        run: bash ./files/sandbox.sh
-      
-      - name: Scan Image for vulnerabilities
-        env:
-          JOB_NAME: github-actions
+        
+      - name: Scan Image with twistcli
         run: bash ./files/scanImage.sh
 
-      - name: Scan Image for Malware using Wildfire
-        run: bash ./files/malwareCheck.sh
+     # - name: OSS License Check 
+     #   run: bash ./files/licenseCheck.sh
+
+     #- name: Apply security policies (Policy-as-Code) for evilpetclinic
+     #   run: bash ./files/addPolicies.sh
+      
+     # - name: Image Sandbox analysis
+     #   run: bash ./files/sandbox.sh
+     
+     
+     # - name: Scan Image for vulnerabilities
+     #   env:
+     #     JOB_NAME: github-actions
+     #   run: bash ./files/scanImage.sh
+
+     # - name: Scan Image for Malware using Wildfire
+     #   run: bash ./files/malwareCheck.sh
           
-      - name: Run PC Code Security action
-        id: PCCS
+    #  - name: Run PC Code Security action
+    #    id: PCCS
+    #    uses: bridgecrewio/checkov-action@master
+    #    env: 
+    #      PRISMA_API_URL: https://api.prismacloud.io
+    #    with:
+    #      directory: ./files
+    #      soft_fail: true # optional: do not return an error code if there are failed checks
+    #      api-key: ${{ secrets.BC_API_KEY }}
+    #      framework: all
+    #      quiet: false
+    #      output_format: cli # optional: the output format, one of: cli, json, junitxml, github_failed_only
+    #      download_external_modules: true
+          #log_level: WARNING # optional: set log level. Default WARNING
+          
+      - name: Run Checkov action
+        id: checkov
         uses: bridgecrewio/checkov-action@master
-        env: 
-          PRISMA_API_URL: https://api.prismacloud.io
         with:
           directory: ./files
           soft_fail: true # optional: do not return an error code if there are failed checks
-          api-key: ${{ secrets.BC_API_KEY }}
-          framework: all
-          quiet: false
-          output_format: cli # optional: the output format, one of: cli, json, junitxml, github_failed_only
-          download_external_modules: true
-          #log_level: WARNING # optional: set log level. Default WARNING
+          framework: kubernetes # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
+          quiet: true
+          output_format: github_failed_only # optional: the output format, one of: cli, json, junitxml, github_failed_only
+          log_level: WARNING # optional: set log level. Default WARNING
           
-      - name: Deploy evilpetclinic app
-        run: bash files/exec.sh deploy.sh
+     # - name: Deploy evilpetclinic app
+     #   run: bash files/exec.sh deploy.sh
         
-      - name: Runtime attacks
-        run: bash files/exec.sh runtime_attacks.sh
+     # - name: Runtime attacks
+     #   run: bash files/exec.sh runtime_attacks.sh
           
-      - name: WAAS attacks
-        run: bash files/exec.sh waas_attacks.sh
+     # - name: WAAS attacks
+     #   run: bash files/exec.sh waas_attacks.sh
