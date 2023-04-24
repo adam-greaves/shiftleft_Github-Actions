@@ -32,6 +32,10 @@ jobs:
       # SCAN IMAGES FOR VULNERABILITIES  
       - name: Scan Image with twistcli
         run: bash ./files/scanImage.sh
+        
+       # SCAN SERVERLESS FOR VULNERABILITIES
+      - name: Scan Serverless with twistcli
+        run: bash ./files/functionScan.sh
 
      # - name: OSS License Check 
      #   run: bash ./files/licenseCheck.sh
