@@ -43,8 +43,8 @@ jobs:
      #- name: Apply security policies (Policy-as-Code) for evilpetclinic
      #   run: bash ./files/addPolicies.sh
       
-     # - name: Image Sandbox analysis
-     #   run: bash ./files/sandbox.sh
+      - name: Image Sandbox analysis
+        run: bash ./files/sandbox.sh
      
      
      # - name: Scan Image for vulnerabilities
